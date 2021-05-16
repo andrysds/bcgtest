@@ -1,6 +1,9 @@
 package main
 
-import "errors"
+import (
+	"errors"
+	"math"
+)
 
 type CartItem struct {
 	SKU    string
@@ -10,6 +13,7 @@ type CartItem struct {
 
 type Cart struct {
 	Items       map[string]*CartItem
+	Discounts   map[int]*Discount
 	TotalAmount float64
 }
 
@@ -35,6 +39,14 @@ func (c *Cart) AddItem(sku string, qty int) error {
 			Amount: amount,
 		}
 		c.Items[sku] = newCartItem
+	}
+
+	promo := Promos[sku]
+	discount, err := promo.CalculateDiscount(c)
+	if err == nil {
+		c.Discounts[discount.PromoID] = discount
+		amount -= discount.Amount
+		amount = math.Round(amount*100) / 100
 	}
 
 	item.Qty -= qty

@@ -9,15 +9,23 @@ var (
 )
 
 type Discount struct {
+	PromoID     int
 	Description string
 	Amount      float64
 }
 
 type Promo interface {
-	CalculateDiscount()
+	CalculateDiscount(cart *Cart) (*Discount, error)
+}
+
+var Promos map[string]Promo
+
+func InitPromos(promos map[string]Promo) {
+	Promos = promos
 }
 
 type FreeItemPromo struct {
+	ID          int
 	Description string
 	ReqItemSKU  string
 	FreeItemSKU string
@@ -41,6 +49,7 @@ func (p *FreeItemPromo) CalculateDiscount(cart *Cart) (*Discount, error) {
 
 	unitPrice := freeItem.Amount / float64(freeItem.Qty)
 	discount := &Discount{
+		PromoID:     p.ID,
 		Description: p.Description,
 		Amount:      float64(freeNum) * unitPrice,
 	}
@@ -49,6 +58,7 @@ func (p *FreeItemPromo) CalculateDiscount(cart *Cart) (*Discount, error) {
 }
 
 type FreeSameItemPromo struct {
+	ID          int
 	Description string
 	ReqItemSKU  string
 	ReqItemNum  int
@@ -68,6 +78,7 @@ func (p *FreeSameItemPromo) CalculateDiscount(cart *Cart) (*Discount, error) {
 	freeNum := item.Qty / p.ReqItemNum * p.FreeItemNum
 	unitPrice := item.Amount / float64(item.Qty)
 	discount := &Discount{
+		PromoID:     p.ID,
 		Description: p.Description,
 		Amount:      float64(freeNum) * unitPrice,
 	}
@@ -76,6 +87,7 @@ func (p *FreeSameItemPromo) CalculateDiscount(cart *Cart) (*Discount, error) {
 }
 
 type PercentageDiscountPromo struct {
+	ID                  int
 	Description         string
 	ReqItemSKU          string
 	ReqItemMoreEqualNum int
@@ -93,6 +105,7 @@ func (p *PercentageDiscountPromo) CalculateDiscount(cart *Cart) (*Discount, erro
 	}
 
 	discount := &Discount{
+		PromoID:     p.ID,
 		Description: p.Description,
 		Amount:      item.Amount * p.DiscountPercentage,
 	}

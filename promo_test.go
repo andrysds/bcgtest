@@ -8,6 +8,7 @@ import (
 
 func TestFreeItemPromoCalculateDiscount(t *testing.T) {
 	promo := &FreeItemPromo{
+		ID:          1,
 		Description: "Buy MacBook Pro, Free Raspberry Pi B",
 		ReqItemSKU:  "43N23P",
 		FreeItemSKU: "234234",
@@ -36,6 +37,7 @@ func TestFreeItemPromoCalculateDiscount(t *testing.T) {
 				TotalAmount: 5399.99 + 30,
 			},
 			expectedDiscount: &Discount{
+				PromoID:     1,
 				Description: promo.Description,
 				Amount:      30,
 			},
@@ -59,6 +61,7 @@ func TestFreeItemPromoCalculateDiscount(t *testing.T) {
 				TotalAmount: 2*5399.99 + 30,
 			},
 			expectedDiscount: &Discount{
+				PromoID:     1,
 				Description: promo.Description,
 				Amount:      30,
 			},
@@ -82,6 +85,7 @@ func TestFreeItemPromoCalculateDiscount(t *testing.T) {
 				TotalAmount: 5399.99 + 2*30,
 			},
 			expectedDiscount: &Discount{
+				PromoID:     1,
 				Description: promo.Description,
 				Amount:      30,
 			},
@@ -134,6 +138,7 @@ func TestFreeItemPromoCalculateDiscount(t *testing.T) {
 
 func TestFreeSameItemPromoCalculateDiscount(t *testing.T) {
 	promo := &FreeSameItemPromo{
+		ID:          2,
 		Description: "Buy 3 Google Homes for the price of 2",
 		ReqItemSKU:  "120P90",
 		ReqItemNum:  3,
@@ -158,6 +163,7 @@ func TestFreeSameItemPromoCalculateDiscount(t *testing.T) {
 				TotalAmount: 3 * 49.99,
 			},
 			expectedDiscount: &Discount{
+				PromoID:     2,
 				Description: promo.Description,
 				Amount:      49.99,
 			},
@@ -176,6 +182,7 @@ func TestFreeSameItemPromoCalculateDiscount(t *testing.T) {
 				TotalAmount: 7 * 49.99,
 			},
 			expectedDiscount: &Discount{
+				PromoID:     2,
 				Description: promo.Description,
 				Amount:      2 * 49.99,
 			},
@@ -228,6 +235,7 @@ func TestFreeSameItemPromoCalculateDiscount(t *testing.T) {
 
 func TestPercentageDiscountPromoCalculateDiscount(t *testing.T) {
 	promo := &PercentageDiscountPromo{
+		ID:                  3,
 		Description:         "Buy 3 or more Alexa Speakers, 10% off",
 		ReqItemSKU:          "A304SD",
 		ReqItemMoreEqualNum: 3,
@@ -252,6 +260,7 @@ func TestPercentageDiscountPromoCalculateDiscount(t *testing.T) {
 				TotalAmount: 3 * 109.5,
 			},
 			expectedDiscount: &Discount{
+				PromoID:     3,
 				Description: promo.Description,
 				Amount:      0.1 * 3 * 109.5,
 			},
@@ -270,6 +279,7 @@ func TestPercentageDiscountPromoCalculateDiscount(t *testing.T) {
 				TotalAmount: 7 * 109.5,
 			},
 			expectedDiscount: &Discount{
+				PromoID:     3,
 				Description: promo.Description,
 				Amount:      0.1 * 7 * 109.5,
 			},
