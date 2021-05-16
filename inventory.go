@@ -1,5 +1,7 @@
 package main
 
+import "errors"
+
 type InventoryItem struct {
 	SKU   string
 	Name  string
@@ -15,4 +17,12 @@ func InitInventory(items []*InventoryItem) {
 	for _, item := range items {
 		Inventory[item.SKU] = item
 	}
+}
+
+func GetInventoryItem(sku string) (*InventoryItem, error) {
+	item, found := Inventory[sku]
+	if !found {
+		return nil, errors.New("item not found")
+	}
+	return item, nil
 }
