@@ -17,6 +17,14 @@ type Cart struct {
 	TotalAmount float64
 }
 
+func NewCart() *Cart {
+	return &Cart{
+		Items:       map[string]*CartItem{},
+		Discounts:   map[int]*Discount{},
+		TotalAmount: 0,
+	}
+}
+
 func (c *Cart) AddItem(sku string, qty int) error {
 	item, err := GetInventoryItem(sku)
 	if err != nil {

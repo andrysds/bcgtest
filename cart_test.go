@@ -6,6 +6,16 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestNewCart(t *testing.T) {
+	expected := &Cart{
+		Items:       map[string]*CartItem{},
+		Discounts:   map[int]*Discount{},
+		TotalAmount: 0,
+	}
+	actual := NewCart()
+	assert.Equal(t, expected, actual)
+}
+
 func TestCartAddItem(t *testing.T) {
 	item := &InventoryItem{
 		SKU:   "120P90",
