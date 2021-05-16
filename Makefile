@@ -1,4 +1,4 @@
-all: test build
+all: test build run
 
 test:
 	go test -v -cover -tags test -coverprofile=coverage.out
@@ -6,3 +6,6 @@ test:
 
 build:
 	go build
+
+run:
+	./bcgtest
